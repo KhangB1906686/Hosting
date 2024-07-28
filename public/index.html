@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Website</title>
+</head>
+<body>
+    <h1>Open a Website</h1>
+    <form id="urlForm">
+        <input type="text" id="url" placeholder="Enter URL" required>
+        <button type="submit">Open Website</button>
+    </form>
+    <div id="message"></div>
+
+    <script>
+        document.getElementById('urlForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const url = document.getElementById('url').value;
+            const response = await fetch(`/open?url=${encodeURIComponent(url)}`);
+            const message = await response.text();
+            document.getElementById('message').innerText = message;
+        });
+    </script>
+</body>
+</html>
