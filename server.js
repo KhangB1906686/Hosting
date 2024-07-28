@@ -1,5 +1,5 @@
 const express = require('express');
-const { Builder, By } = require('selenium-webdriver');
+const { Builder, By, Capabilities } = require('selenium-webdriver');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,9 +14,15 @@ app.get('/open', async (req, res) => {
     }
 
     try {
-        let driver = await new Builder().forBrowser('chrome').build();
+        const capabilities = Capabilities.chrome();
+        capabilities.set('chromeOptions', {
+            args: ['--headless', '--no-sandbox', '--disable-dev-shm-usage']
+        });
+
+        let driver = await new Builder().forBrowser('chrome').withCapabilities(capabilities).build();
         await driver.get(url);
         res.send('Website opened successfully!');
+
         // Đóng trình duyệt sau một khoảng thời gian
         setTimeout(() => driver.quit(), 5000);
     } catch (error) {
